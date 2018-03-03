@@ -28,6 +28,7 @@ public class Block : MonoBehaviour {
 
 			transform.position = position;
 			transform.rotation = rotation;
+			rb.velocity = Vector3.zero;
 
 			Join (core.gameObject.GetComponent<Rigidbody> ());
 
