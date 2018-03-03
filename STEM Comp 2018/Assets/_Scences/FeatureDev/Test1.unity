@@ -392,6 +392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabable: 1
   attached: 0
+  desiredRotation: {x: 0, y: 0, z: 0}
 --- !u!54 &372568581
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -536,6 +537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabable: 1
   attached: 0
+  desiredRotation: {x: 0, y: 0, z: 0}
 --- !u!54 &587764336
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -696,6 +698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabable: 0
   attached: 0
+  desiredRotation: {x: 0, y: 0, z: 0}
 --- !u!1 &1143130447
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,6 +964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabable: 1
   attached: 0
+  desiredRotation: {x: 0, y: 0, z: 0}
 --- !u!54 &1524726337
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1146,6 +1150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabable: 1
   attached: 0
+  desiredRotation: {x: 0, y: 0, z: 0}
 --- !u!54 &2119690879
 Rigidbody:
   m_ObjectHideFlags: 0

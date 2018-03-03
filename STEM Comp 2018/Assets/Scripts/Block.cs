@@ -7,24 +7,34 @@ public class Block : MonoBehaviour {
 	public bool grabable = true;
 	public bool attached = false;
 
-	GameObject roBase;
+	public Vector3 desiredRotation;
+
+	GameObject robotBase;
 	Rigidbody rb;
 
 	// Use this for initialization
 	void Start () {
 		rb = gameObject.GetComponent<Rigidbody> ();
-		roBase = transform.parent.gameObject;
+		robotBase = transform.parent.gameObject;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		
 	}
 
+
+
+
+
+
+
+	//-------------------// This area is for doing attaching things
 	public void Attach (Transform attachTo, Vector3 normal, GameObject core) {
 		if (!attached) {
 			Vector3 position = attachTo.position + normal;
-			Quaternion rotation = attachTo.rotation;
+			Quaternion rotation = attachTo.rotation * Quaternion.Euler(desiredRotation * 90);
+			//Quaternion rotation = Quaternion.Euler(Vector3.Scale(attachTo.eulerAngles, desiredRotation));
 
 			transform.position = position;
 			transform.rotation = rotation;

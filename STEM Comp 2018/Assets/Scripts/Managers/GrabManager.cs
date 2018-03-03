@@ -68,7 +68,7 @@ public class GrabManager : MonoBehaviour {
 
 			if (block) {
 				blockBeingGrabbed.transform.position = block.transform.position + hit.normal;
-				blockBeingGrabbed.transform.rotation = block.transform.rotation;
+				blockBeingGrabbed.transform.rotation = block.transform.rotation * Quaternion.Euler(blockBeingGrabbed.desiredRotation * 90);
 			} else {
 				RaycastHit blockHit;
 				if (Physics.SphereCast (ray, 1.5f, out blockHit)) {
@@ -90,5 +90,24 @@ public class GrabManager : MonoBehaviour {
 		}
 
 		blockBeingGrabbed.transform.position = Vector3.Lerp (blockBeingGrabbed.transform.position, desiredPos, 0.1f);
+
+		//Test, this would be a bad idea to leave in the final product
+		//It would also be quite bad to simply delete this and not replace it with the final version
+		//So yeah, good luck!
+
+		float desieredX = blockBeingGrabbed.desiredRotation.x;
+		float desieredY = blockBeingGrabbed.desiredRotation.y;
+		float desieredZ = blockBeingGrabbed.desiredRotation.z;
+
+		desieredX += Input.GetKeyDown (KeyCode.A) ? 1f : 0;
+		desieredX -= Input.GetKeyDown (KeyCode.D) ? 1f : 0;
+
+		desieredY += Input.GetKeyDown (KeyCode.W) ? 1f : 0;
+		desieredY -= Input.GetKeyDown (KeyCode.S) ? 1f : 0;
+
+		desieredZ += Input.GetKeyDown (KeyCode.Q) ? 1f : 0;
+		desieredZ -= Input.GetKeyDown (KeyCode.E) ? 1f : 0;
+
+		blockBeingGrabbed.desiredRotation = new Vector3 (desieredX,desieredY,desieredZ);
 	}
 }
