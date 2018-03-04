@@ -5,24 +5,33 @@ using UnityEngine;
 public class Block : MonoBehaviour {
 
 	public bool grabable = true;
+	[HideInInspector]
 	public bool attached = false;
 
+	public static Block core;
+
+	[HideInInspector]
 	public Vector3 desiredRotation;
 
-	GameObject robotBase;
-	Rigidbody rb;
+	protected GameObject robotBase;
+	protected Rigidbody rb;
+
+	public State[] states = new State[0];
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		rb = gameObject.GetComponent<Rigidbody> ();
 		robotBase = transform.parent.gameObject;
 	}
 
-	// Update is called once per frame
-	void Update () {
-		
+	protected State getState (string name) {
+		foreach (State state in states) {
+			if (name == state.stateName) {
+				return state;
+			}
+		}
+		return null;
 	}
-
 
 
 
