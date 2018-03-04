@@ -24,6 +24,14 @@ public class Block : MonoBehaviour {
 		robotBase = transform.parent.gameObject;
 	}
 
+	protected void Update () {
+		foreach (State state in states) {
+			if (KeyState.isKeyState (state)) {
+				KeyState.getKeyState (state).Update ();
+			}
+		}
+	}
+
 	protected State getState (string name) {
 		foreach (State state in states) {
 			if (name == state.stateName) {

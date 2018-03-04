@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 372568581}
   - component: {fileID: 372568580}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Thruster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -373,7 +373,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 372568578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.85, y: 3.45, z: 0}
+  m_LocalPosition: {x: 2.03, y: 3.45, z: -2.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 764196814}
@@ -387,13 +387,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 372568578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cb83884f06ead841a533b0670e93f3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e1821a5d3081cb46a8fa94febe3adb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   grabable: 1
   attached: 0
   desiredRotation: {x: 0, y: 0, z: 0}
-  states: []
+  states:
+  - {fileID: 11400000, guid: df83f54a88afdf64eb9a07adc1ed025e, type: 2}
 --- !u!54 &372568581
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -423,7 +424,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 76131df976638264bb7bd33e0789ff60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -855,7 +856,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 86fc513cb93fa21448f8c970c1e8f57b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

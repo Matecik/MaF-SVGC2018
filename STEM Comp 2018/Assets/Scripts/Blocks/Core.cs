@@ -31,7 +31,7 @@ public class Core : Block {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	new void Update () {
 		
 	}
 }
