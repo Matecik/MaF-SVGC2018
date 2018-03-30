@@ -10,6 +10,8 @@ public class CameraOrbit : MonoBehaviour {
 	public float ySpeed = 100f;
 	public float scrollSpeed = 20f;
 
+	public MouseManager mouseManager;
+
 	bool rightClick = false;
 
 	float x = 0f;
@@ -29,10 +31,10 @@ public class CameraOrbit : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//As long as the player holds right click this vaule will be true
-		rightClick = Input.GetMouseButton (1);
+		rightClick = Input.GetMouseButton (1) && mouseManager.allowCameraOrbit;
 
 		//This is for scrolling
-		distance += Input.GetAxis ("Mouse ScrollWheel") * scrollSpeed;
+		distance += Input.GetAxis ("Mouse ScrollWheel") * scrollSpeed * (mouseManager.allowCameraOrbit ? 1 : 0);
 		distance = Mathf.Clamp (distance, 2, 20);
 
 		//Does the object we are trying to orbit even exist?

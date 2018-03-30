@@ -8,10 +8,16 @@ public class MouseManager : MonoBehaviour {
 	GrabManager grabber;
 	public static float maxRange = 40f;
 
+	UIManager uiManager;
+	public bool allowRightMenuClick = true;
+	public bool allowCameraOrbit = true;
+
 	// Use this for initialization
 	void Start () {
 		gameCam = Camera.main;
 		grabber = gameObject.GetComponent<GrabManager> ();
+
+		uiManager = gameObject.transform.parent.GetComponentInChildren<UIManager> ();
 	}
 	
 	// Update is called once per frame
@@ -24,6 +30,11 @@ public class MouseManager : MonoBehaviour {
 			Block block = hit.collider.gameObject.GetComponent<Block> ();
 			if (block && Input.GetMouseButtonDown (0)) {
 				grabber.Grab (block);
+			}
+			if (block && Input.GetMouseButtonDown (1) && allowRightMenuClick) {
+				//Debug.Log ("Open a menu");
+				uiManager.OpenRightClick (block);
+				allowCameraOrbit = false;
 			}
 		}
 	}
