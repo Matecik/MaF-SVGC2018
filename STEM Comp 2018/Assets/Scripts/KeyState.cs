@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "Key State")]
+
 public class KeyState : State {
+
+
+	public KeyState (string _stateName, KeyCode _inputKey, bool _isToggleMode) {
+		stateName = _stateName;
+		inputKey = _inputKey;
+		isToggleMode = _isToggleMode;
+	}
 
 	[SerializeField]
 	KeyCode inputKey;
@@ -12,16 +19,15 @@ public class KeyState : State {
 	[SerializeField]
 	bool isToggleMode = false;
 
-	[SerializeField]
-	KeyCode[] allowedKeys = new KeyCode[26];
-
 	public void Update () {
 		isActive = UpdateState ();
+
 	}
 
 	public bool setKey (KeyCode targetKey) {
-		foreach (KeyCode allowedKey in allowedKeys) {
+		foreach (KeyCode allowedKey in InputManager.allowedKeys) {
 			if (targetKey == allowedKey) {
+				inputKey = targetKey;
 				return true;
 			}
 		}
@@ -36,11 +42,19 @@ public class KeyState : State {
 		isToggleMode = !isToggleMode;
 	}
 
+	public void ToggleToggleMode (bool target) {
+		isToggleMode = target;
+	}
+
+	public bool getToggle () {
+		return isToggleMode;
+	}
+
 	bool UpdateState() {
 		if (isToggleMode) {
 			if (InputManager.StateKeyDown (inputKey)) {
 				ChangeInState ();
-				return !isActive;
+				return isActive;
 			} else {
 				return isActive;
 			}
@@ -87,6 +101,7 @@ public class KeyState : State {
 		}
 		return null;
 	}
+
 
 
 }

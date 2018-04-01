@@ -6,6 +6,10 @@ public class Thruster : Block {
 
 	bool thrusterActive = false;
 
+	void Awake () {
+		states.Add(new KeyState ("Active", KeyCode.B, false));
+	}
+
 	// Use this for initialization
 	new void Start () {
 		base.Start ();
@@ -17,7 +21,6 @@ public class Thruster : Block {
 	new void Update () {
 		base.Update ();
 		if (thrusterActive) {
-			Debug.Log ("Lift off!");
 			gameObject.GetComponent<Rigidbody> ().AddForce (gameObject.transform.up * 50);
 		}
 	}

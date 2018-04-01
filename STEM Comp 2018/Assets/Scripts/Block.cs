@@ -16,7 +16,8 @@ public class Block : MonoBehaviour {
 	protected GameObject robotBase;
 	protected Rigidbody rb;
 
-	public State[] states = new State[0];
+	//public State[] states = new State[0];
+	public List<State> states = new List<State>();
 
 	// Use this for initialization
 	protected void Start () {

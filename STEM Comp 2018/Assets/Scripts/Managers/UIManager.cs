@@ -27,7 +27,6 @@ public class UIManager : MonoBehaviour {
 			menu.transform.SetParent (canvas.transform, false);
 			RectTransform menuTransform = menu.GetComponent<RectTransform> ();
 			Vector2 mosPos = new Vector2 (Input.mousePosition.x, Input.mousePosition.y - Screen.height);
-			Debug.Log (mosPos.x + ", " + mosPos.y);
 
 			if (mosPos.y < -Screen.height + 200) {
 				mosPos = new Vector2 (mosPos.x, Input.mousePosition.y - Screen.height + 200);

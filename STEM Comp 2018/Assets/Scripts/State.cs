@@ -3,8 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "State")]
-public class State : ScriptableObject {
+
+public class State {
+
+	public State (string _stateName) {
+		stateName = _stateName;
+		Start ();
+	}
+
+	protected State () {
+		Start ();
+	}
 
 	public string stateName = "State";
 
@@ -12,11 +21,13 @@ public class State : ScriptableObject {
 	public UnityEvent stateDeactivated;
 
 	[SerializeField]
-	protected bool isActive = false;
+	public bool isActive = false;
 
 	void Start() {
 		stateActivated = new UnityEvent ();
 		stateDeactivated = new UnityEvent ();
+		stateActivated.AddListener (OnActivate);
+		stateDeactivated.AddListener (OnDeactiviate);
 	}
 		
 	public void ForceSetState (bool targetState) {
@@ -27,6 +38,14 @@ public class State : ScriptableObject {
 			isActive = false;
 			stateDeactivated.Invoke ();
 		}
+	}
+
+	void OnActivate () {
+		isActive = true;
+	}
+
+	void OnDeactiviate () {
+		isActive = false;
 	}
 
 }
