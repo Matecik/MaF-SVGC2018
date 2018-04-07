@@ -5,6 +5,8 @@ using UnityEngine;
 public class Thruster : Block {
 
 	bool thrusterActive = false;
+	public float force = 50f;
+	public float consumption = 1f;
 
 	void Awake () {
 		states.Add(new KeyState ("Active", KeyCode.B, false));
@@ -20,8 +22,10 @@ public class Thruster : Block {
 	// Update is called once per frame
 	new void Update () {
 		base.Update ();
-		if (thrusterActive) {
-			gameObject.GetComponent<Rigidbody> ().AddForce (gameObject.transform.up * 50);
+		if (thrusterActive && attached) {
+			if (Block.core.UseFuel (consumption * Time.deltaTime)) {
+				gameObject.GetComponent<Rigidbody> ().AddForce (gameObject.transform.up * force);
+			}
 		}
 	}
 

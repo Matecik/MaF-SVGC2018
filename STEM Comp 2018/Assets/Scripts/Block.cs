@@ -8,7 +8,7 @@ public class Block : MonoBehaviour {
 	[HideInInspector]
 	public bool attached = false;
 
-	public static Block core;
+	public static Core core;
 
 	[HideInInspector]
 	public Vector3 desiredRotation;

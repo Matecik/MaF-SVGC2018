@@ -11,6 +11,12 @@ public class UIManager : MonoBehaviour {
 
 	public bool rightMenuOpen = false;
 
+	float fuelHight = 90f;
+	float powerHight = 90f;
+
+	public RectTransform fuelPanel;
+	public RectTransform powerPanel;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -18,7 +24,10 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		fuelHight = (Block.core.totalFuel / Block.core.maxFuel) * 90f;
+		powerHight = (Block.core.totalPower / Block.core.maxPower) * 90f;
+		fuelPanel.sizeDelta = new Vector2 (31, fuelHight);
+		powerPanel.sizeDelta = new Vector2 (31, powerHight);
 	}
 
 	public void OpenRightClick(Block block) {
