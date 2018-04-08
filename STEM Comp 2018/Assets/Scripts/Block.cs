@@ -26,7 +26,6 @@ public class Block : MonoBehaviour {
 	protected void Start () {
 		magicListOfAllBlocks.Add (this);
 		rb = gameObject.GetComponent<Rigidbody> ();
-		robotBase = transform.parent.gameObject;
 	}
 
 	protected void Update () {

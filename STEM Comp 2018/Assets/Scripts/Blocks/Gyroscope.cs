@@ -7,9 +7,10 @@ public class Gyroscope : Block {
 	public float tourqe = 50f;
 	public float consumption = 1f;
 
+
 	void Awake () {
 		states.Add(new State ("Powered"));
-		states.Add(new KeyState ("Active", KeyCode.V, false));
+		states.Add(new KeyState ("Active", KeyCode.F, false));
 	}
 
 	// Use this for initialization
@@ -24,9 +25,7 @@ public class Gyroscope : Block {
 
 	void FixedUpdate () {
 		if (getState ("Active").isActive && attached) {
-			if (Core.core.UsePower (consumption)) {
-				
-			}
+			core.GetComponent<Rigidbody> ().AddTorque (core.transform.eulerAngles * tourqe);
 		}
 	}
 

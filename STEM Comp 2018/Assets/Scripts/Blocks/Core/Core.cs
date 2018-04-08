@@ -128,6 +128,7 @@ public class Core : Block {
 		List<Block> knownBlocks = new List<Block> ();
 		List<Block> learntBlocks = new List<Block> ();
 		knownBlocks.Add (this);
+		int count = 0;
 		while (knownBlocks.Count > testedBlocks.Count) {
 			foreach (Block block in knownBlocks) {
 				if (!testedBlocks.Contains (block)) {
@@ -143,9 +144,16 @@ public class Core : Block {
 				}
 			}
 			foreach (Block block in learntBlocks) {
-				knownBlocks.Add (block);
+				if (!knownBlocks.Contains (block)) {
+					knownBlocks.Add (block);
+				}
 			}
 			learntBlocks = new List<Block>();
+			count++;
+			if (count > 100) {
+				Debug.LogError ("Overflow of TestCoreConnections loop. The game would have just freezed if I had not saved you. You're welcome.");
+				break;
+			}
 		}
 
 		float desiredMass = 0;
@@ -159,7 +167,5 @@ public class Core : Block {
 				block.Detach ();
 			}
 		}
-
-		Debug.Log ("The core is connected to " + testedBlocks.Count + " blocks");
 	}
 }

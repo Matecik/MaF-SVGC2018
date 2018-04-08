@@ -9,6 +9,8 @@ public class Thruster : Block
 	public float force = 50f;
 	public float consumption = 1f;
 
+	ParticleSystem partSys;
+
 	void Awake ()
 	{
 		states.Add (new KeyState ("Active", KeyCode.B, false));
@@ -18,6 +20,7 @@ public class Thruster : Block
 	new void Start ()
 	{
 		base.Start ();
+		partSys = GetComponent<ParticleSystem> ();
 		getState ("Active").stateActivated.AddListener (ThrusterActivate);
 		getState ("Active").stateDeactivated.AddListener (ThrusterDeactivate);
 	}
@@ -34,7 +37,14 @@ public class Thruster : Block
 		if (thrusterActive && attached) {
 			if (Block.core.UseFuel (consumption * Time.deltaTime)) {
 				core.GetComponent<Rigidbody> ().AddForceAtPosition (gameObject.transform.up * force * Time.deltaTime, gameObject.transform.position);
+				partSys.Play ();
+			} 
+			else {
+				partSys.Stop ();
 			}
+		}
+		else {
+			partSys.Stop ();
 		}
 	}
 
