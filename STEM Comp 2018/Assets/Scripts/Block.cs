@@ -7,6 +7,9 @@ public class Block : MonoBehaviour {
 	public bool grabable = true;
 	[HideInInspector]
 	public bool attached = false;
+	public float mass = 1f;
+
+	public static List<Block> magicListOfAllBlocks = new List<Block> ();
 
 	public static Core core;
 
@@ -21,6 +24,7 @@ public class Block : MonoBehaviour {
 
 	// Use this for initialization
 	protected void Start () {
+		magicListOfAllBlocks.Add (this);
 		rb = gameObject.GetComponent<Rigidbody> ();
 		robotBase = transform.parent.gameObject;
 	}
@@ -42,6 +46,42 @@ public class Block : MonoBehaviour {
 		return null;
 	}
 
+	public List<Block> PerformRayPulse () {
+		List<Block> returnBlocks = new List<Block> ();
+		for (int i = 0; i < 6; i++) {
+			Vector3 testDirection = Vector3.zero;
+			RaycastHit hit;
+			//Need to use a switch statement here
+			if (i == 0) {
+				testDirection = gameObject.transform.up;
+			}
+			if (i == 1) {
+				testDirection = -gameObject.transform.up;
+			}
+			if (i == 2) {
+				testDirection = gameObject.transform.right;
+			}
+			if (i == 3) {
+				testDirection = -gameObject.transform.right;
+			}
+			if (i == 4) {
+				testDirection = gameObject.transform.forward;
+			}
+			if (i == 5) {
+				testDirection = -gameObject.transform.forward;
+			}
+
+			if (Physics.Raycast (gameObject.transform.position, testDirection, out hit, 1.2f)) {
+				Block hitBlock = hit.collider.gameObject.GetComponent<Block> ();
+				if (hitBlock != null) {
+					if (hitBlock.attached) {
+						returnBlocks.Add (hitBlock);
+					}
+				}
+			}
+		}
+		return returnBlocks;
+	}
 
 
 
@@ -56,9 +96,11 @@ public class Block : MonoBehaviour {
 
 			transform.position = position;
 			transform.rotation = rotation;
-			rb.velocity = Vector3.zero;
+			if (rb) {
+				rb.velocity = Vector3.zero;
+			}
 
-			Join (core.gameObject.GetComponent<Rigidbody> ());
+			Join ();
 
 			attached = true;
 		}
@@ -67,17 +109,18 @@ public class Block : MonoBehaviour {
 	public void Detach () {
 		Unjoin ();
 		attached = false;
+		gameObject.layer = 0;
 	}
 
-	void Join (Rigidbody bodyToJoin) {
-		FixedJoint fixj = gameObject.AddComponent<FixedJoint>();
-		fixj.connectedBody = bodyToJoin;
+	void Join () {
+		gameObject.transform.parent = core.transform;
+		if (GetComponent<Rigidbody> ()) {
+			Destroy (GetComponent<Rigidbody> ());
+		}
 	}
 
 	void Unjoin () {
-		FixedJoint[] fixjs = gameObject.GetComponents<FixedJoint> ();
-		foreach (FixedJoint fixj in fixjs) {
-			Destroy (fixj);
-		}
+		gameObject.transform.parent = core.transform.parent;
+		gameObject.AddComponent<Rigidbody> ();
 	}
 }

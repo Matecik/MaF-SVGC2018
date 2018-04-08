@@ -37,6 +37,14 @@ public class Core : Block {
 	// Update is called once per frame
 	new void Update () {
 		base.Update ();
+		attached = true;
+		foreach (Block block in magicListOfAllBlocks) {
+			if (block) {
+
+			} else {
+				magicListOfAllBlocks.Remove (block);
+			}
+		}
 
 		//Calulate Fuel Cap
 		maxFuel = 0;
@@ -107,5 +115,51 @@ public class Core : Block {
 			batt.power = totalPower / batts.Count;
 		}
 		Mathf.Clamp (totalPower, 0, maxPower);
+	}
+
+	void FixedUpdate () {
+		TestCoreConnections ();
+		GetComponent<Rigidbody> ().WakeUp ();
+	}
+
+
+	public void TestCoreConnections () {
+		List<Block> testedBlocks = new List<Block> ();
+		List<Block> knownBlocks = new List<Block> ();
+		List<Block> learntBlocks = new List<Block> ();
+		knownBlocks.Add (this);
+		while (knownBlocks.Count > testedBlocks.Count) {
+			foreach (Block block in knownBlocks) {
+				if (!testedBlocks.Contains (block)) {
+					List<Block> tempList = block.PerformRayPulse();
+					testedBlocks.Add (block);
+					foreach (Block scannedBlock in tempList) {
+						if (!testedBlocks.Contains (scannedBlock)) {
+							if (!knownBlocks.Contains (scannedBlock)) {
+								learntBlocks.Add (scannedBlock);
+							}
+						}
+					}
+				}
+			}
+			foreach (Block block in learntBlocks) {
+				knownBlocks.Add (block);
+			}
+			learntBlocks = new List<Block>();
+		}
+
+		float desiredMass = 0;
+		foreach (Block block in testedBlocks) {
+			desiredMass += block.mass;
+		}
+		GetComponent<Rigidbody> ().mass = desiredMass;
+
+		foreach (Block block in magicListOfAllBlocks) {
+			if (!testedBlocks.Contains(block) && block.attached) {
+				block.Detach ();
+			}
+		}
+
+		Debug.Log ("The core is connected to " + testedBlocks.Count + " blocks");
 	}
 }

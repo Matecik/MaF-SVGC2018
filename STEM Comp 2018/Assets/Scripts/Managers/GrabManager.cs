@@ -66,7 +66,7 @@ public class GrabManager : MonoBehaviour {
 			Block block = hit.collider.gameObject.GetComponent<Block> ();
 
 
-			if (block) {
+			if (block && block.attached) {
 				blockBeingGrabbed.transform.position = block.transform.position + hit.normal;
 				blockBeingGrabbed.transform.rotation = block.transform.rotation * Quaternion.Euler(blockBeingGrabbed.desiredRotation * 90);
 			} else {
@@ -78,7 +78,7 @@ public class GrabManager : MonoBehaviour {
 				}
 			}
 
-			if (block && Input.GetMouseButtonUp (0)) {
+			if (block && Input.GetMouseButtonUp (0) && block.attached) {
 				blockBeingGrabbed.Attach (block.transform, hit.normal, core);
 				Release (8);
 				return;

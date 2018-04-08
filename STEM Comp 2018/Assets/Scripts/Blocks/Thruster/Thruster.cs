@@ -2,38 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thruster : Block {
+public class Thruster : Block
+{
 
 	bool thrusterActive = false;
 	public float force = 50f;
 	public float consumption = 1f;
 
-	void Awake () {
-		states.Add(new KeyState ("Active", KeyCode.B, false));
+	void Awake ()
+	{
+		states.Add (new KeyState ("Active", KeyCode.B, false));
 	}
 
 	// Use this for initialization
-	new void Start () {
+	new void Start ()
+	{
 		base.Start ();
 		getState ("Active").stateActivated.AddListener (ThrusterActivate);
 		getState ("Active").stateDeactivated.AddListener (ThrusterDeactivate);
 	}
 	
 	// Update is called once per frame
-	new void Update () {
+	new void Update ()
+	{
 		base.Update ();
+
+	}
+
+	void FixedUpdate ()
+	{
 		if (thrusterActive && attached) {
 			if (Block.core.UseFuel (consumption * Time.deltaTime)) {
-				gameObject.GetComponent<Rigidbody> ().AddForce (gameObject.transform.up * force);
+				core.GetComponent<Rigidbody> ().AddForceAtPosition (gameObject.transform.up * force * Time.deltaTime, gameObject.transform.position);
 			}
 		}
 	}
 
-	void ThrusterActivate() {
+	void ThrusterActivate ()
+	{
 		thrusterActive = true;
 	}
 
-	void ThrusterDeactivate() {
+	void ThrusterDeactivate ()
+	{
 		thrusterActive = false;
 	}
 }
