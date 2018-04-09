@@ -25,7 +25,7 @@ public class Gyroscope : Block {
 
 	void FixedUpdate () {
 		if (getState ("Active").isActive && attached) {
-			core.GetComponent<Rigidbody> ().AddTorque (core.transform.eulerAngles * tourqe);
+			core.GetComponent<Rigidbody> ().AddTorque (((transform.eulerAngles.x % 360f)-180f)*tourqe,0,((transform.eulerAngles.z % 360f)-180f)*tourqe);
 		}
 	}
 
