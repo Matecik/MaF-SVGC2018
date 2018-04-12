@@ -4684,6 +4684,9 @@ MonoBehaviour:
   attached: 0
   mass: 1
   desiredRotation: {x: 0, y: 0, z: 0}
+  internalPowerGen: 3
+  internalPowerCap: 30
+  internalPower: 30
   batts: []
   tanks: []
 --- !u!224 &1052064626 stripped
@@ -5025,8 +5028,35 @@ MonoBehaviour:
   attached: 0
   mass: 1
   desiredRotation: {x: 0, y: 0, z: 0}
-  tourqe: 0.1
+  tourqeModifier: 20
   consumption: 1
+  maxTourqe: 200
+  maxiumSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 3.3309171
+      outSlope: 3.3309171
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.5104199
+      value: 0.9147972
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  stoppingPowerMofifier: 100
+  angleChangePower: 0.5
 --- !u!54 &1160557716
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5121,7 +5151,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1233303256}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -8.61, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1849989476}
@@ -5404,7 +5434,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -2089451149
+  randomSeed: -56170905
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -9600,7 +9630,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 970510503}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 12.99, z: 0}
+  m_LocalPosition: {x: 0, y: 3.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1143130448}

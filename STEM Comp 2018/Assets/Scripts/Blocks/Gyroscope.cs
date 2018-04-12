@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class Gyroscope : Block {
 
-	public float tourqe = 50f;
-	public float consumption = 1f;
 
+	public float tourqeModifier = 50f;
+	public float consumption = 1f;
+	public float maxTourqe = 200f;
+
+	public AnimationCurve maxiumSpeedCurve; 
+	public float stoppingPowerMofifier;
+
+	public float angleChangePower = 1f;
+
+	Vector3 targetDirection = Vector3.up;
 
 	void Awake () {
 		states.Add(new State ("Powered"));
-		states.Add(new KeyState ("Active", KeyCode.F, false));
+		states.Add(new KeyState ("Active", KeyCode.F, true));
+		states.Add(new KeyState ("Forward", KeyCode.W, false));
+		states.Add(new KeyState ("Backward", KeyCode.S, false));
+		states.Add(new KeyState ("Right", KeyCode.D, false));
+		states.Add(new KeyState ("Left", KeyCode.A, false));
 	}
 
 	// Use this for initialization
@@ -24,8 +36,55 @@ public class Gyroscope : Block {
 	}
 
 	void FixedUpdate () {
+		int forwardInt = getState ("Forward").isActive ? 1 : 0;
+		int backwardInt = getState ("Backward").isActive ? -1 : 0;
+		targetDirection = new Vector3 (
+			0,
+			1,
+			((backwardInt+forwardInt)*angleChangePower)
+		);
+		targetDirection = targetDirection.normalized;
+		targetDirection = Quaternion.Euler (0, core.transform.rotation.eulerAngles.y, 0) * targetDirection;
+
+
 		if (getState ("Active").isActive && attached) {
-			core.GetComponent<Rigidbody> ().AddTorque (((transform.eulerAngles.x % 360f)-180f)*tourqe,0,((transform.eulerAngles.z % 360f)-180f)*tourqe);
+			Vector3 target = targetDirection;
+
+			//get the angle between transform.forward and target delta
+			float angleDiff = Vector3.Angle(transform.up, target);
+
+			// get its cross product, which is the axis of rotation to
+			// get from one vector to the other
+			Vector3 cross = Vector3.Cross(transform.up, target);
+
+			float desiredMaxSpeed = maxiumSpeedCurve.Evaluate (angleDiff / 180);
+
+			// apply torque along that axis according to the magnitude of the angle.
+			if (core.UsePower (((angleDiff/180) * tourqeModifier * consumption) * Time.deltaTime)) {
+				core.GetComponent<Rigidbody> ().AddTorque (cross * Mathf.Clamp((angleDiff * tourqeModifier),0,maxTourqe));
+			}
+
+			if (core.GetComponent<Rigidbody> ().angularVelocity.magnitude > desiredMaxSpeed) {
+				core.GetComponent<Rigidbody> ().AddTorque (Vector3.ClampMagnitude(-core.GetComponent<Rigidbody> ().angularVelocity * stoppingPowerMofifier,100f));
+			}
+
+//			if (angleDiff < 0.02f) {
+//				float yRot = core.transform.localRotation.eulerAngles.y;
+//				core.transform.up = target;
+//				core.transform.localRotation = Quaternion.Euler (core.transform.rotation.x, yRot, core.transform.position.z);
+//				
+//			}
+		}
+
+		if (getState ("Right").isActive && attached && getState ("Active").isActive) {
+			if (core.UsePower (Mathf.Clamp (tourqeModifier, 0, maxTourqe) * Time.deltaTime * consumption * 0.01f)) {
+				core.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, tourqeModifier * 10, 0));
+			}
+		}
+		if (getState ("Left").isActive && attached && getState ("Active").isActive) {
+			if (core.UsePower (Mathf.Clamp (tourqeModifier, 0, maxTourqe) * Time.deltaTime * consumption * 0.01f)) {
+				core.GetComponent<Rigidbody>().AddTorque( new Vector3 (0,-tourqeModifier * 10,0));
+			}
 		}
 	}
 

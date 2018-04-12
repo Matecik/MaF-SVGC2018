@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Core : Block {
 
+	public float internalPowerGen = 3f;
+	public float internalPowerCap = 30f;
+	public float internalPower = 30f;
+
 	public float totalPower {
 		private set;
 		get;
@@ -37,6 +41,7 @@ public class Core : Block {
 	// Update is called once per frame
 	new void Update () {
 		base.Update ();
+		internalPower = Mathf.Clamp (internalPower, 0, internalPowerCap);
 		attached = true;
 		foreach (Block block in magicListOfAllBlocks) {
 			if (block) {
@@ -67,16 +72,21 @@ public class Core : Block {
 		foreach (Battery batt in batts) {
 			maxPower += batt.powerCap;
 		}
+		maxPower += internalPowerCap;
 		//Calculate Fuel
 		totalPower = 0;
 		foreach (Battery batt in batts) {
 			totalPower += batt.power;
 		}
+		totalPower += internalPower;
 		//Automaticly balence fuel by averaging all fuel tank's fuel
 		foreach (Battery batt in batts) {
-			batt.power = totalPower / batts.Count;
+			batt.power = totalPower / (batts.Count + 1);
 		}
+		internalPower = totalPower / (batts.Count + 1);
 		Mathf.Clamp (totalPower, 0, maxPower);
+
+		AddPower (internalPowerGen * Time.deltaTime);
 	}
 
 	public bool UseFuel (float usage) {
@@ -94,8 +104,9 @@ public class Core : Block {
 		if (totalPower - usage >= 0) {
 			totalPower -= usage;
 			foreach (Battery batt in batts) {
-				batt.power = totalPower / batts.Count;
+				batt.power = totalPower / (batts.Count + 1);
 			}
+			internalPower = totalPower / (batts.Count + 1);
 			return true;
 		}
 		return false;
@@ -112,8 +123,9 @@ public class Core : Block {
 	public void AddPower (float ammount) {
 		totalPower += ammount;
 		foreach (Battery batt in batts) {
-			batt.power = totalPower / batts.Count;
+			batt.power = totalPower / (batts.Count + 1);
 		}
+		internalPower = totalPower / (batts.Count + 1);
 		Mathf.Clamp (totalPower, 0, maxPower);
 	}
 
