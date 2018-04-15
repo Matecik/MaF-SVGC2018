@@ -5,7 +5,7 @@ using UnityEngine;
 public class GrabManager : MonoBehaviour {
 
 	Camera gameCam;
-	public GameObject core;
+	GameObject core;
 
 	public Block blockBeingGrabbed;
 	bool grabbingBlock = false;
@@ -15,6 +15,7 @@ public class GrabManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameCam = Camera.main;
+		core = Core.core.gameObject;
 	}
 	
 	// Update is called once per frame
