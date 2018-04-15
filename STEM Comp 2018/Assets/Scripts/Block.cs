@@ -70,7 +70,7 @@ public class Block : MonoBehaviour {
 				testDirection = -gameObject.transform.forward;
 			}
 
-			if (Physics.Raycast (gameObject.transform.position, testDirection, out hit, 1.2f)) {
+			if (Physics.Raycast (gameObject.transform.position, testDirection, out hit, 1.2f,1<<8)) {
 				Block hitBlock = hit.collider.gameObject.GetComponent<Block> ();
 				if (hitBlock != null) {
 					if (hitBlock.attached) {

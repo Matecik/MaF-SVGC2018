@@ -6,6 +6,7 @@ public class Gyroscope : Block {
 
 
 	public float tourqeModifier = 50f;
+	public float turnModifier = 35f;
 	public float consumption = 1f;
 	public float maxTourqe = 200f;
 
@@ -23,6 +24,8 @@ public class Gyroscope : Block {
 		states.Add(new KeyState ("Backward", KeyCode.S, false));
 		states.Add(new KeyState ("Right", KeyCode.D, false));
 		states.Add(new KeyState ("Left", KeyCode.A, false));
+		states.Add(new KeyState ("Turn Right", KeyCode.E, false));
+		states.Add(new KeyState ("Turn Left", KeyCode.Q, false));
 	}
 
 	// Use this for initialization
@@ -38,8 +41,10 @@ public class Gyroscope : Block {
 	void FixedUpdate () {
 		int forwardInt = getState ("Forward").isActive ? 1 : 0;
 		int backwardInt = getState ("Backward").isActive ? -1 : 0;
+		int rightInt = getState ("Right").isActive ? 1 : 0;
+		int leftInt = getState ("Left").isActive ? -1 : 0;
 		targetDirection = new Vector3 (
-			0,
+			((leftInt+rightInt)*angleChangePower),
 			1,
 			((backwardInt+forwardInt)*angleChangePower)
 		);
@@ -76,14 +81,14 @@ public class Gyroscope : Block {
 //			}
 		}
 
-		if (getState ("Right").isActive && attached && getState ("Active").isActive) {
-			if (core.UsePower (Mathf.Clamp (tourqeModifier, 0, maxTourqe) * Time.deltaTime * consumption * 0.01f)) {
-				core.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, tourqeModifier * 10, 0));
+		if (getState ("Turn Right").isActive && attached && getState ("Active").isActive) {
+			if (core.UsePower (consumption * Time.deltaTime)) {
+				core.GetComponent<Rigidbody> ().AddTorque (new Vector3 (0, turnModifier, 0));
 			}
 		}
-		if (getState ("Left").isActive && attached && getState ("Active").isActive) {
-			if (core.UsePower (Mathf.Clamp (tourqeModifier, 0, maxTourqe) * Time.deltaTime * consumption * 0.01f)) {
-				core.GetComponent<Rigidbody>().AddTorque( new Vector3 (0,-tourqeModifier * 10,0));
+		if (getState ("Turn Left").isActive && attached && getState ("Active").isActive) {
+			if (core.UsePower (consumption * Time.deltaTime)) {
+				core.GetComponent<Rigidbody>().AddTorque( new Vector3 (0,-turnModifier,0));
 			}
 		}
 	}
