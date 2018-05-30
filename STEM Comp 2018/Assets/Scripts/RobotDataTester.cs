@@ -16,6 +16,8 @@ public class RobotDataTester : MonoBehaviour {
 
 	public void TestRobotData () {
 		RobotData rd = new RobotData ();
-		RobotData.Save (@"/Users/ritcma2020/Desktop/test.xml", rd);
+		//RobotData.Save (@"/Users/ritcma2020/Desktop/test.xml", rd);
+		//rd = RobotData.LoadFromFile (@"/Users/ritcma2020/Desktop/test.xml");
+		RobotData.CreateRobot();
 	}
 }

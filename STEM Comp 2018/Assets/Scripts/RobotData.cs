@@ -23,6 +23,18 @@ public class RobotData
 			return (RobotData)xml.Deserialize (fs);
 		}
 	}
+
+	public static void CreateRobot (/*RobotData rd, Vector3 position, Vector3 rotation*/) {
+		foreach (Block block in Block.magicListOfAllBlocks) {
+			if (block.GetType() == typeof(Core)) {
+				MonoBehaviour.Destroy (block.gameObject);
+			}
+		}
+		Core newCore = MonoBehaviour.Instantiate( Resources.Load<Core> ("Core"));
+		newCore.GetComponentInChildren<CameraOrbit> ().mouseManager = MouseManager.mouseman;
+
+
+	}
 }
 
 public class BlockData
@@ -42,7 +54,7 @@ public class BlockData
 		foreach (Block block in Block.magicListOfAllBlocks) {
 			if (block.attached) {
 				BlockData bd = new BlockData ();
-				bd.position = block.transform.position;
+				bd.position = block.transform.localPosition;
 				bd.rotation = block.desiredRotation;
 				bd.type = block.GetType ().ToString ();
 				bd.states = block.states;
