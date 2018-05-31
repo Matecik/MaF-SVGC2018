@@ -8,6 +8,8 @@ public class RobotData
 {
 	public List<BlockData> blocks;
 
+	public static bool isLoading = false;
+
 	public static void Save (string filepath, RobotData rd)
 	{
 		using (FileStream fs = new FileStream (filepath, FileMode.Create)) {
@@ -24,16 +26,31 @@ public class RobotData
 		}
 	}
 
-	public static void CreateRobot (/*RobotData rd, Vector3 position, Vector3 rotation*/) {
+	public static void CreateRobot (RobotData rd, Vector3 position, Vector3 rotation) {
+		isLoading = true;
 		foreach (Block block in Block.magicListOfAllBlocks) {
-			if (block.GetType() == typeof(Core)) {
+			if (block.attached == true && block.GetType() != typeof(Core)) {
 				MonoBehaviour.Destroy (block.gameObject);
 			}
 		}
-		Core newCore = MonoBehaviour.Instantiate( Resources.Load<Core> ("Core"));
-		newCore.GetComponentInChildren<CameraOrbit> ().mouseManager = MouseManager.mouseman;
+		Core.core.transform.position = position;
+		Core.core.transform.rotation = Quaternion.Euler (rotation);
+		Core.core.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		Core.core.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
 
+		foreach (BlockData blockData in rd.blocks) {
+			if (blockData.type != "Core") {
+				GameObject blockObject = MonoBehaviour.Instantiate ((GameObject)Resources.Load (blockData.type));
+				blockObject.transform.parent = Core.core.transform;
+				blockObject.transform.localPosition = 
+				new Vector3 (Mathf.Round (blockData.position.x), Mathf.Round (blockData.position.y), Mathf.Round (blockData.position.z));
+				Block block = blockObject.GetComponent<Block> ();
+				block.desiredRotation = blockData.rotation;
 
+			}
+		}
+
+		isLoading = false;
 	}
 }
 

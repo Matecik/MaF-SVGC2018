@@ -36,6 +36,10 @@ public class Block : MonoBehaviour {
 		}
 	}
 
+	~Block () {
+		magicListOfAllBlocks.Remove (this);
+	}
+
 	protected State getState (string name) {
 		foreach (State state in states) {
 			if (name == state.stateName) {
@@ -82,7 +86,9 @@ public class Block : MonoBehaviour {
 		return returnBlocks;
 	}
 
+	public virtual void SetUpDefaults () {
 
+	}
 
 
 
@@ -119,7 +125,9 @@ public class Block : MonoBehaviour {
 	}
 
 	void Unjoin () {
-		gameObject.transform.parent = core.transform.parent;
-		gameObject.AddComponent<Rigidbody> ();
+		if (gameObject != null) {
+			gameObject.transform.parent = core.transform.parent;
+			gameObject.AddComponent<Rigidbody> ();
+		}
 	}
 }

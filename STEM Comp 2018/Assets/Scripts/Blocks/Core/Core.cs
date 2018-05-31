@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Core : Block {
+public class Core : Block
+{
 
 	public float internalPowerGen = 3f;
 	public float internalPowerCap = 30f;
@@ -12,43 +14,54 @@ public class Core : Block {
 		private set;
 		get;
 	}
+
 	public float maxPower {
 		private set;
 		get;
 	}
+
 	public List<Battery> batts = new List<Battery> ();
 
 	public float totalFuel {
 		private set;
 		get;
 	}
+
 	public float maxFuel {
 		private set;
 		get;
 	}
+
 	public List<FuelTank> tanks = new List<FuelTank> ();
 
-	void Awake () {
+	void Awake ()
+	{
 		Block.core = this;
 	}
 
 	// Use this for initialization
-	new void Start () {
+	new void Start ()
+	{
 		base.Start ();
 
 	}
 	
 	// Update is called once per frame
-	new void Update () {
+	new void Update ()
+	{
 		base.Update ();
 		internalPower = Mathf.Clamp (internalPower, 0, internalPowerCap);
 		attached = true;
-		foreach (Block block in magicListOfAllBlocks) {
-			if (block) {
+		try {
+			foreach (Block block in magicListOfAllBlocks) {
+				if (block) {
 
-			} else {
-				magicListOfAllBlocks.Remove (block);
+				} else {
+					magicListOfAllBlocks.Remove (block);
+				}
 			}
+		} catch (Exception e){
+
 		}
 
 		//Calulate Fuel Cap
@@ -89,7 +102,8 @@ public class Core : Block {
 		AddPower (internalPowerGen * Time.deltaTime);
 	}
 
-	public bool UseFuel (float usage) {
+	public bool UseFuel (float usage)
+	{
 		if (totalFuel - usage >= 0) {
 			totalFuel -= usage;
 			foreach (FuelTank tank in tanks) {
@@ -100,7 +114,8 @@ public class Core : Block {
 		return false;
 	}
 
-	public bool UsePower (float usage) {
+	public bool UsePower (float usage)
+	{
 		if (totalPower - usage >= 0) {
 			totalPower -= usage;
 			foreach (Battery batt in batts) {
@@ -112,7 +127,8 @@ public class Core : Block {
 		return false;
 	}
 
-	public void AddFuel (float ammount) {
+	public void AddFuel (float ammount)
+	{
 		totalFuel += ammount;
 		foreach (FuelTank tank in tanks) {
 			tank.fuel = totalFuel / tanks.Count;
@@ -120,7 +136,8 @@ public class Core : Block {
 		Mathf.Clamp (totalFuel, 0, maxFuel);
 	}
 
-	public void AddPower (float ammount) {
+	public void AddPower (float ammount)
+	{
 		totalPower += ammount;
 		foreach (Battery batt in batts) {
 			batt.power = totalPower / (batts.Count + 1);
@@ -129,13 +146,17 @@ public class Core : Block {
 		Mathf.Clamp (totalPower, 0, maxPower);
 	}
 
-	void FixedUpdate () {
-		TestCoreConnections ();
+	void FixedUpdate ()
+	{
+		if (!RobotData.isLoading) {
+			TestCoreConnections ();
+		}
 		GetComponent<Rigidbody> ().WakeUp ();
 	}
 
 
-	public void TestCoreConnections () {
+	public void TestCoreConnections ()
+	{
 		List<Block> testedBlocks = new List<Block> ();
 		List<Block> knownBlocks = new List<Block> ();
 		List<Block> learntBlocks = new List<Block> ();
@@ -144,7 +165,7 @@ public class Core : Block {
 		while (knownBlocks.Count > testedBlocks.Count) {
 			foreach (Block block in knownBlocks) {
 				if (!testedBlocks.Contains (block)) {
-					List<Block> tempList = block.PerformRayPulse();
+					List<Block> tempList = block.PerformRayPulse ();
 					testedBlocks.Add (block);
 					foreach (Block scannedBlock in tempList) {
 						if (!testedBlocks.Contains (scannedBlock)) {
@@ -160,7 +181,7 @@ public class Core : Block {
 					knownBlocks.Add (block);
 				}
 			}
-			learntBlocks = new List<Block>();
+			learntBlocks = new List<Block> ();
 			count++;
 			if (count > 100) {
 				Debug.LogError ("Overflow of TestCoreConnections loop. The game would have just freezed if I had not saved you. You're welcome.");
@@ -175,8 +196,10 @@ public class Core : Block {
 		GetComponent<Rigidbody> ().mass = desiredMass;
 
 		foreach (Block block in magicListOfAllBlocks) {
-			if (!testedBlocks.Contains(block) && block.attached) {
-				block.Detach ();
+			if (!testedBlocks.Contains (block) && block.attached) {
+				if (block != null) {
+					block.Detach ();
+				}
 			}
 		}
 	}
