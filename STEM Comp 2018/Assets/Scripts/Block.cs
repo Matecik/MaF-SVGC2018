@@ -87,7 +87,8 @@ public class Block : MonoBehaviour {
 	}
 
 	public virtual void SetUpDefaults () {
-
+		grabable = true;
+		mass = 1f;
 	}
 
 
@@ -100,6 +101,24 @@ public class Block : MonoBehaviour {
 			//Quaternion rotation = Quaternion.Euler(Vector3.Scale(attachTo.eulerAngles, desiredRotation));
 
 			transform.position = position;
+			transform.rotation = rotation;
+			if (rb) {
+				rb.velocity = Vector3.zero;
+			}
+
+			Join ();
+
+			attached = true;
+		}
+	}
+
+	public void Attach (Vector3 position) {
+		if (!attached) {
+			Quaternion rotation = Quaternion.Euler(Vector3.zero) * Quaternion.Euler(desiredRotation * 90);
+			//Quaternion rotation = Quaternion.Euler(Vector3.Scale(attachTo.eulerAngles, desiredRotation));
+
+			transform.parent = Core.core.transform;
+			transform.localPosition = position;
 			transform.rotation = rotation;
 			if (rb) {
 				rb.velocity = Vector3.zero;

@@ -148,6 +148,7 @@ public class Core : Block
 
 	void FixedUpdate ()
 	{
+		Debug.Log (RobotData.isLoading);
 		if (!RobotData.isLoading) {
 			TestCoreConnections ();
 		}

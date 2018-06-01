@@ -46,11 +46,13 @@ public class RobotData
 				new Vector3 (Mathf.Round (blockData.position.x), Mathf.Round (blockData.position.y), Mathf.Round (blockData.position.z));
 				Block block = blockObject.GetComponent<Block> ();
 				block.desiredRotation = blockData.rotation;
+				//block.attached = true;
+				block.Attach(new Vector3 (Mathf.Round (blockData.position.x), Mathf.Round (blockData.position.y), Mathf.Round (blockData.position.z)));
 
 			}
 		}
 
-		isLoading = false;
+		//isLoading = false;
 	}
 }
 
