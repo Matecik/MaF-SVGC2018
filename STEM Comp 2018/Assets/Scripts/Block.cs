@@ -34,13 +34,16 @@ public class Block : MonoBehaviour {
 				KeyState.getKeyState (state).Update ();
 			}
 		}
+		if (rb) {
+			this.rb.WakeUp ();
+		}
 	}
 
 	~Block () {
 		magicListOfAllBlocks.Remove (this);
 	}
 
-	protected State getState (string name) {
+	public State getState (string name) {
 		foreach (State state in states) {
 			if (name == state.stateName) {
 				return state;
@@ -73,7 +76,7 @@ public class Block : MonoBehaviour {
 			if (i == 5) {
 				testDirection = -gameObject.transform.forward;
 			}
-
+				
 			if (Physics.Raycast (gameObject.transform.position, testDirection, out hit, 1.2f,1<<8)) {
 				Block hitBlock = hit.collider.gameObject.GetComponent<Block> ();
 				if (hitBlock != null) {

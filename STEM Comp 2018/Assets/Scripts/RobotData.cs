@@ -44,10 +44,31 @@ public class RobotData
 				blockObject.transform.parent = Core.core.transform;
 				blockObject.transform.localPosition = 
 				new Vector3 (Mathf.Round (blockData.position.x), Mathf.Round (blockData.position.y), Mathf.Round (blockData.position.z));
+				blockObject.layer = 8;
+				blockObject.GetComponent<BoxCollider> ().enabled = true;
 				Block block = blockObject.GetComponent<Block> ();
 				block.desiredRotation = blockData.rotation;
 				//block.attached = true;
 				block.Attach(new Vector3 (Mathf.Round (blockData.position.x), Mathf.Round (blockData.position.y), Mathf.Round (blockData.position.z)));
+
+				foreach (State state in blockData.states) {
+					if (KeyState.isKeyState (state)) {
+						KeyState ks = block.getState (state.stateName) as KeyState;
+						KeyState dks = KeyState.getKeyState (state);
+						ks.inputKey = dks.inputKey;
+						ks.isActive = dks.isActive;
+						if (dks.isActive) {
+							ks.stateActivated.Invoke ();
+						}
+						dks.isToggleMode = dks.isToggleMode;
+					} else if (!KeyState.isKeyState (state)) {
+						State s = block.getState (state.stateName);
+						s.isActive = state.isActive;
+						if (state.isActive) {
+							s.stateActivated.Invoke ();
+						}
+					}
+				}
 
 			}
 		}
