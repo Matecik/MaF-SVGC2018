@@ -60,7 +60,7 @@ public class RobotData
 						if (dks.isActive) {
 							ks.stateActivated.Invoke ();
 						}
-						dks.isToggleMode = dks.isToggleMode;
+						ks.isToggleMode = dks.isToggleMode;
 					} else if (!KeyState.isKeyState (state)) {
 						State s = block.getState (state.stateName);
 						s.isActive = state.isActive;

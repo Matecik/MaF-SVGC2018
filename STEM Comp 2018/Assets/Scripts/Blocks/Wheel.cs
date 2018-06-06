@@ -12,6 +12,8 @@ public class Wheel : Block {
 	public float wheelSpeed = 1f;
 	public float wheelPower = 1f;
 
+	bool currentlyExtended = false;
+
 	public float consumption = 1f;
 
 	Vector3 desiredPos;
@@ -63,6 +65,10 @@ public class Wheel : Block {
 			}
 		}
 
+		if (getState ("Extended").isActive && !currentlyExtended) {
+			Extend ();
+		}
+
 		if (getState ("Forward").isActive && attached && core.UsePower(consumption * Time.deltaTime)) {
 			motor.targetVelocity = wheelSpeed;
 			hinge.motor = motor;
@@ -80,6 +86,7 @@ public class Wheel : Block {
 			desiredPos = new Vector3 (0, -0.5f, 0);
 			desiredScale = new Vector3 (1.1f, 0.3f, 1.1f);
 			grabable = false;
+			currentlyExtended = true;
 		}
 	}
 
@@ -88,6 +95,7 @@ public class Wheel : Block {
 			desiredPos = Vector3.zero;
 			desiredScale = new Vector3 (0.9f, 0.3f, 0.9f);
 			grabable = true;
+			currentlyExtended = false;
 		}
 	}
 }

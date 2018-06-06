@@ -16,8 +16,12 @@ public class RobotDataTester : MonoBehaviour {
 
 	public void TestRobotData () {
 		RobotData rd = new RobotData ();
-		//RobotData.Save (@"/Users/ritcma2020/Desktop/test.xml", rd);
 		rd = RobotData.LoadFromFile (@"/Users/ritcma2020/Desktop/test.xml");
 		RobotData.CreateRobot(rd, Vector3.up*6, Vector3.zero);
+	}
+
+	public void SaveRobot () {
+		RobotData rd = new RobotData ();
+		RobotData.Save (@"/Users/ritcma2020/Desktop/test.xml", rd);
 	}
 }

@@ -154,6 +154,19 @@ public class Core : Block
 			RobotData.isLoading = false;
 		}
 		GetComponent<Rigidbody> ().WakeUp ();
+		foreach (FuelTank tank in tanks) {
+			if (tank == null) {
+				tanks.Remove (tank);
+				break;
+			}
+		}
+
+		foreach (Battery batt in batts) {
+			if (batt == null) {
+				batts.Remove (batt);
+				break;
+			}
+		}
 	}
 
 
