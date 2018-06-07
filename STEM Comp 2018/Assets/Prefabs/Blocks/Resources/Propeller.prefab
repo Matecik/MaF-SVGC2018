@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 54205013413736666}
   - component: {fileID: 114875385093252444}
   m_Layer: 0
-  m_Name: Prop
+  m_Name: Propeller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
