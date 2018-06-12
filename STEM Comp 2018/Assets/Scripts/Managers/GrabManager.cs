@@ -5,7 +5,7 @@ using UnityEngine;
 public class GrabManager : MonoBehaviour {
 
 	Camera gameCam;
-	public GameObject core;
+	GameObject core;
 
 	public Block blockBeingGrabbed;
 	bool grabbingBlock = false;
@@ -15,6 +15,7 @@ public class GrabManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameCam = Camera.main;
+		core = Core.core.gameObject;
 	}
 	
 	// Update is called once per frame
@@ -66,7 +67,7 @@ public class GrabManager : MonoBehaviour {
 			Block block = hit.collider.gameObject.GetComponent<Block> ();
 
 
-			if (block) {
+			if (block && block.attached) {
 				blockBeingGrabbed.transform.position = block.transform.position + hit.normal;
 				blockBeingGrabbed.transform.rotation = block.transform.rotation * Quaternion.Euler(blockBeingGrabbed.desiredRotation * 90);
 			} else {
@@ -78,7 +79,7 @@ public class GrabManager : MonoBehaviour {
 				}
 			}
 
-			if (block && Input.GetMouseButtonUp (0)) {
+			if (block && Input.GetMouseButtonUp (0) && block.attached) {
 				blockBeingGrabbed.Attach (block.transform, hit.normal, core);
 				Release (8);
 				return;

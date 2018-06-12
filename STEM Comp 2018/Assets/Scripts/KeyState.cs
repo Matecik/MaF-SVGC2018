@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
 
 
 public class KeyState : State {
@@ -13,11 +16,15 @@ public class KeyState : State {
 		isToggleMode = _isToggleMode;
 	}
 
-	[SerializeField]
-	KeyCode inputKey;
+	public KeyState () {
+
+	}
 
 	[SerializeField]
-	bool isToggleMode = false;
+	public KeyCode inputKey;
+
+	[SerializeField]
+	public bool isToggleMode = false;
 
 	public void Update () {
 		isActive = UpdateState ();
@@ -101,7 +108,4 @@ public class KeyState : State {
 		}
 		return null;
 	}
-
-
-
 }

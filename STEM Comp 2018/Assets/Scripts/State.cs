@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Xml.Serialization;
 
 
+[XmlInclude(typeof(KeyState))]
 public class State {
 
 	public State (string _stateName) {
@@ -15,9 +17,12 @@ public class State {
 		Start ();
 	}
 
+	[XmlAttribute]
 	public string stateName = "State";
 
+	[XmlIgnore]
 	public UnityEvent stateActivated;
+	[XmlIgnore]
 	public UnityEvent stateDeactivated;
 
 	[SerializeField]
