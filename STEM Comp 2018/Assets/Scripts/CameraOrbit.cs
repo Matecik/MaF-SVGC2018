@@ -52,9 +52,18 @@ public class CameraOrbit : MonoBehaviour {
 			//The position of the camera is based on its rotation. It calculates a position *distance* away from a point at angle *rotation*
 			Vector3 distanceBack = new Vector3 (0, 0, -distance);
 			Vector3 position = rotation * distanceBack + objectToOrbit.position;
+
+            Vector3 truePos = position;
+
+            RaycastHit raycastHit;
+            if (Physics.Raycast(objectToOrbit.transform.position, (position - objectToOrbit.transform.position).normalized, out raycastHit, distance, 65087))
+            {
+                truePos = raycastHit.point + (position - objectToOrbit.transform.position).normalized * -1f;
+            }
+
 			//Sets the calculated vaules
 			transform.rotation = rotation;
-			transform.position = position;
+			transform.position = truePos;
 		}
 	}
 }
